@@ -60,6 +60,10 @@ namespace Inventory {
         }
 
         public void Add(ThingDef thing) {
+            if (thing == null || !thing.IsApparel) {
+                return;
+            }
+
             requiredItems.Add(new Item(thing));
 
             var pawns = LoadoutManager.PawnsWithTags[this];
@@ -99,6 +103,11 @@ namespace Inventory {
                 var count = requiredItems.RemoveAll(item => item.Def == null);
                 if (count != 0) {
                     Log.Error($"Attempting to load a null def, have you removed a mod? - Removing item from {name} - ({GetUniqueLoadID()})");
+                }
+
+                count = requiredItems.RemoveAll(item => !item.Def.IsApparel);
+                if (count != 0) {
+                    Log.Warning($"Removing {count} non-apparel item(s) from tag {name} while loading apparel-only data.");
                 }
 
                 foreach(var item in requiredItems) {

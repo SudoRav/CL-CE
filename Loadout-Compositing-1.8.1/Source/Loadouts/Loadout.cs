@@ -59,12 +59,6 @@ namespace Inventory {
         }
 
         public void UpdateState(LoadoutElement element, bool active) {  
-            foreach (var item in element.Tag.requiredItems.Where(item => !item.Def.IsApparel)) {
-                if (!active) {
-                    AddItemToRemove(item);
-                }
-            }
-
             if (ModBase.settings.immediatelyResolveLoadout) {
                 needsUpdate = true;
             }
@@ -97,6 +91,10 @@ namespace Inventory {
         }
 
         public int DesiredCount(List<Thing> pawnGear, Item curItem) {
+            if (!curItem.Def.IsApparel) {
+                return 0;
+            }
+
             // list of things which our current item accepts
             var acceptedThings = pawnGear.Where(curItem.Allows).ToList();
             // all items besides our current item
@@ -118,7 +116,7 @@ namespace Inventory {
 
         public IEnumerable<Item> ItemsAccepting(Thing thing) {
             return Tags.SelectMany(t => t
-                .ItemsMatching(item => item.Allows(thing)));
+                .ItemsMatching(item => item.Def.IsApparel && item.Allows(thing)));
         }
 
         public IEnumerable<Item> HypotheticalWornApparel(LoadoutState state, BodyDef def) {
@@ -142,16 +140,7 @@ namespace Inventory {
         }
 
         public IEnumerable<Item> DesiredItems(List<Thing> heldThings) {
-            var desiredThings = Items.Where(t => !t.Def.IsApparel);
-            foreach (var thing in desiredThings) {
-                var count = heldThings.Where(heldThing => thing.Allows(heldThing))
-                    .Sum(heldThing => heldThing.stackCount);
-
-                if (count >= thing.Quantity)
-                    continue;
-
-                yield return thing;
-            }
+            yield break;
         }
 
         public void ActivatePanicMode(LoadoutState newState) {

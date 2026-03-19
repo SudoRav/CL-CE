@@ -13,11 +13,7 @@ namespace Inventory {
 
         enum State {
 
-            Apparel,
-            Melee,
-            Ranged,
-            Medicinal,
-            Items
+            Apparel
 
         }
 
@@ -373,7 +369,7 @@ namespace Inventory {
             }
         }
 
-        // [ Apparel ] [ Melee ] [ Ranged ] [ Medical / Drugs ] 
+        // [ Apparel ]
         public void DrawItemColumns(Rect r) {
             var topRect = r.TopPartPixels(UIC.DEFAULT_HEIGHT);
 
@@ -394,10 +390,6 @@ namespace Inventory {
             r.AdjVertBy(UIC.DEFAULT_HEIGHT);
 
             DrawOptionButton(Textures.ApparelTex, "Apparel", State.Apparel);
-            DrawOptionButton(Textures.MeleeTex, "Melee", State.Melee);
-            DrawOptionButton(Textures.RangedTex, "Ranged", State.Ranged);
-            DrawOptionButton(Textures.MedicalTex, "Medicine", State.Medicinal);
-            DrawOptionButton(Textures.MiscItemsTex, "Items", State.Items);
 
             if (selectedStat != null) {
                 Text.Font = GameFont.Tiny;
@@ -409,23 +401,7 @@ namespace Inventory {
                 Text.WordWrap = true;
             }
             
-            switch (curState) {
-                case State.Apparel:
-                    DrawDefList(r, Utility.apparelDefs);
-                    break;
-                case State.Melee:
-                    DrawDefList(r, Utility.meleeWeapons, Dialog_ItemSpecifier.baseWeaponStats.Union(Dialog_ItemSpecifier.meleeWeaponStats).ToList());
-                    break;
-                case State.Ranged:
-                    DrawDefList(r, Utility.rangedWeapons, Dialog_ItemSpecifier.baseWeaponStats.Union(Dialog_ItemSpecifier.rangedWeaponStats).ToList());
-                    break;
-                case State.Medicinal:
-                    DrawDefList(r, Utility.medicinalDefs);
-                    break;
-                case State.Items:
-                    DrawDefList(r, Utility.items);
-                    break;
-            }
+            DrawDefList(r, Utility.apparelDefs);
         }
 
         private void DrawDefList(Rect r, IReadOnlyList<ThingDef> defList, List<StatDef> extraStats = null) {
@@ -675,6 +651,10 @@ namespace Inventory {
         }
 
         private void AddDefToTag(ThingDef def) {
+            if (def == null || !def.IsApparel) {
+                return;
+            }
+
             curTag.Add(def);
         }
 

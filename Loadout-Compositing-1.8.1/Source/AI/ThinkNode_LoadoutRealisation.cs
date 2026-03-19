@@ -49,20 +49,7 @@ namespace Inventory {
             var comp = pawn.TryGetComp<LoadoutComponent>();
             
             if (comp.Loadout.NeedsUpdate || PawnNeedsUpdate(pawn)) {
-                
-                if (comp.Loadout.ThingsToRemove.Count > 0) {
-                    var removeThingsJob = RemoveThingsJob(pawn, comp.Loadout);
-                    if (removeThingsJob != null) {
-                        return new ThinkResult(removeThingsJob, this);
-                    }
-                }
-                
                 var job = SatisfyLoadoutClothingJob(pawn, comp.Loadout);
-                if (job != null) {
-                    return new ThinkResult(job, this);
-                }
-                
-                job = SatisfyLoadoutItemsJob(pawn, comp.Loadout);
                 if (job != null) {
                     return new ThinkResult(job, this);
                 }
@@ -92,38 +79,15 @@ namespace Inventory {
         }
 
         private Job RemoveThingsJob(Pawn pawn, Loadout loadout) {
-
-            var pawnGear = pawn.InventoryAndEquipment().ToList();
-
-            foreach (var item in loadout.ThingsToRemove.ToList()) {
-                var itemCount = item.CountIn(pawnGear);
-                var loadoutDesiredCount = loadout.DesiredCount(pawnGear, item) - item.Quantity;
-
-                if (itemCount > loadoutDesiredCount) {
-                    var job = RemoveItem(pawnGear, item, Mathf.Min(itemCount - loadoutDesiredCount, item.Quantity));
-                    if (job != null) {
-                        if (job.count >= item.Quantity) {
-                            loadout.ThingsToRemove.Remove(item);
-                        }
-                        return job;
-                    }
-                }
-
-                loadout.ThingsToRemove.Remove(item);
-            }
-
             return null;
         }
 
         // a heavily modified version of JobGiver_OptimizeApparel:TryGiveJob
         private Job SatisfyLoadoutClothingJob(Pawn pawn, Loadout loadout) {
             var wornApparel = pawn.apparel.WornApparel;
-            var list = pawn.Map.listerThings.ThingsInGroup(ThingRequestGroup.Apparel)
-                .OfType<Apparel>()
-                .Where(app => loadout.Items.Any(item => item.Allows(app)))
-                .ToList();
+            var desiredApparel = loadout.HypotheticalWornApparel(loadout.CurrentState, pawn.def.race.body).ToList();
 
-            if (list.Count == 0) {
+            if (desiredApparel.Count == 0) {
                 return null;
             }
 
@@ -133,24 +97,37 @@ namespace Inventory {
                 OptimizeApparel.wornApparelScores.Add(OptimizeApparel.ApparelScoreRaw(pawn, apparel));
             }
 
-            Apparel bestApparel = null;
-            var bestApparelScore = 0f;
-
-            foreach (var apparel in list) {
-                if (!ValidApparelFor(apparel, pawn)) {
+            foreach (var desiredItem in desiredApparel) {
+                if (wornApparel.Any(desiredItem.Allows)) {
                     continue;
                 }
 
-                var apparelScore = OptimizeApparel.ApparelScoreGain(pawn, apparel, OptimizeApparel.wornApparelScores);
+                Apparel bestApparel = null;
+                var bestApparelScore = float.MinValue;
+                var bestDistance = float.MaxValue;
 
-                if (apparelScore < 0.05f || apparelScore < bestApparelScore) continue;
-                if (!pawn.CanReserveAndReach(apparel, PathEndMode.OnCell, pawn.NormalMaxDanger())) continue;
+                foreach (var apparel in pawn.Map.listerThings.ThingsInGroup(ThingRequestGroup.Apparel).OfType<Apparel>().Where(desiredItem.Allows)) {
+                    if (!ValidApparelFor(apparel, pawn)) {
+                        continue;
+                    }
 
-                bestApparel = apparel;
-                bestApparelScore = apparelScore;
+                    var apparelScore = OptimizeApparel.ApparelScoreGain(pawn, apparel, OptimizeApparel.wornApparelScores);
+                    if (apparelScore < 0.05f) continue;
+
+                    var distance = pawn.Position.DistanceToSquared(apparel.Position);
+                    if (apparelScore > bestApparelScore || (Mathf.Approximately(apparelScore, bestApparelScore) && distance < bestDistance)) {
+                        bestApparel = apparel;
+                        bestApparelScore = apparelScore;
+                        bestDistance = distance;
+                    }
+                }
+
+                if (bestApparel != null) {
+                    return JobMaker.MakeJob(EquipApparel, bestApparel);
+                }
             }
 
-            return bestApparel == null ? null : JobMaker.MakeJob(EquipApparel, bestApparel);
+            return null;
         }
 
         private bool ValidApparelFor(Apparel apparel, Pawn pawn) {
@@ -162,133 +139,21 @@ namespace Inventory {
         }
 
         private Job SatisfyLoadoutItemsJob(Pawn pawn, Loadout loadout) {
-            var pawnGear = pawn.InventoryAndEquipment().ToList();
-
-            foreach (var item in loadout.Items.Where(item => !item.Def.IsApparel)) {
-                var itemCount = item.CountIn(pawnGear);
-                var loadoutDesiredCount = loadout.DesiredCount(pawnGear, item);
-
-                // if we have the ideal amount for our item, we can just continue and consider this item
-                // satisfied
-                if (itemCount == loadoutDesiredCount) {
-                    continue;
-                }
-
-                // we need to pick up some more of this item to consider it satisfied
-                if (itemCount < loadoutDesiredCount) {
-                    var job = FindItem(pawn, item, loadoutDesiredCount - itemCount);
-                    if (job != null) {
-                        return job;
-                    }
-                }
-                else {
-                    // we have too many for this item, but what happens if there are other tags which
-                    // have this item in it too? we need to check for them too. I.e. if multiple tags
-                    // want a pawn to pick up medicine, we need to remove only if we are above the sum
-                    // of quantities of all those items in those tags.
-
-                    if (loadoutDesiredCount >= itemCount) {
-                        continue;
-                    }
-
-                    var job = RemoveItem(pawnGear, item, itemCount - loadoutDesiredCount);
-                    if (job != null) {
-                        return job;
-                    }
-                }
-            }
-
             return null;
         }
 
         private Job FindItem(Pawn pawn, Item item, int count) {
-            var things = item.ThingsOnMap(pawn.Map).ToList();
-
-            var orderedList = count == 1
-                ? DecideItemPriority(pawn, things)
-                : things.OrderByDescending(t => t.stackCount);
-            
-            foreach (var thing in orderedList) {
-                if (!Utility.ShouldAttemptToEquip(pawn, thing, true)) {
-                    continue;
-                }
-
-                if (count == 1 && thing.def.IsWeapon && pawn.equipment.Primary is null )
-                {
-                    return JobMaker.MakeJob(HoldItem, thing);
-                } else {
-                    var job = JobMaker.MakeJob(EquipItem, thing);
-                    job.count = Mathf.Min(count, thing.stackCount);
-
-                    return job;
-                }
-            }
-
             return null;
         }
 
         // Mostly for better bio-coded weapon integration.
         private IOrderedEnumerable<Thing> DecideItemPriority(Pawn pawn, List<Thing> things)
         {
-            if (things.Empty())
-            {
-                return new List<Thing>().OrderByDescending(t => t.stackCount);
-            }
-            
-            var example = things.First();
-            if (example.def.IsWeapon)
-            {
-                // If the things are bio-codable, if any are coded to the pawn - we should prioritize that one - if they
-                // are coded to another person, we should ignore it.
-                if (example.TryGetComp<CompBiocodable>()?.Biocodable ?? false)
-                {
-                    // Remove each thing which is bio-coded to a pawn other than the target    
-                    things.RemoveAll(t =>
-                    {
-                        var comp = t.TryGetComp<CompBiocodable>();
-                        return comp != null && comp.CodedPawn != null && comp.CodedPawn != pawn;
-                    });
-                
-                    // If there exists a weapon which is coded to our pawn, lets equip that instead of an uncoded one, 
-                    // otherwise pick the closest occurence.
-                    var marked = things.Where(t => t.TryGetComp<CompBiocodable>()?.CodedPawn == pawn).ToList();
-                    if (marked.Any())
-                    {
-                        things = marked;
-                        // Special case the case we have a bonded weapon, but its forbidden
-                        if (things.All(t => t.IsForbidden(pawn)))
-                        {
-                            Messages.Message(new Message(
-                                $"{pawn.Name} cannot equip {string.Join(", ", things.Select(t => t.LabelShort))} as it is forbidden.", 
-                                MessageTypeDefOf.SilentInput,
-                                things
-                            ));
-                        }
-                    }
-                }
-
-                if (example.def.IsMeleeWeapon)
-                {
-                    return things.OrderByDescending(t => t.GetStatValueForPawn(StatDefOf.MeleeWeapon_AverageDPS, pawn));
-                }
-            }
-  
             return things.OrderBy(t => t.InteractionCell.DistanceToSquared(pawn.InteractionCell));
         }
 
         private Job RemoveItem(List<Thing> pawnGear, Item item, int count) {
-            if (count == 0) return null;
-            
-            var gear = pawnGear.Where(item.Allows).OrderByDescending(thing => thing.stackCount).ToList();
-
-            var thing = gear.FirstOrDefault();
-            if (thing == null) return null;
-
-            var job = JobMaker.MakeJob(UnloadItem);
-            job.SetTarget(TargetIndex.A, thing);
-            job.count = Mathf.Min(count, thing.stackCount);
-
-            return job;
+            return null;
         }
 
     }
