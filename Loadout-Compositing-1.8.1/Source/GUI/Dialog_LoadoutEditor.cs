@@ -428,7 +428,7 @@ namespace Inventory {
             // }
 
             var hypotheticalApparel = component.Loadout.HypotheticalWornApparel(shownState, pawn.def.race.body).ToList();
-            var relevantItems = hypotheticalApparel.Union(loadoutItems.Where(item => !item.Def.IsApparel)).ToList();
+            var relevantItems = hypotheticalApparel.ToList();
 
             if ((hypotheticalApparel.Count + relevantItems.Count) < 0) {
                 statsHeight = GenUI.GapTiny + UIC.SPACED_HEIGHT;
