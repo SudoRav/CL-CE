@@ -102,33 +102,26 @@ namespace Inventory {
                 }
 
                 Apparel bestApparel = null;
-                var bestRawScore = float.MinValue;
-                var bestHitPoints = int.MinValue;
+                var bestApparelScore = float.MinValue;
                 var bestDistance = float.MaxValue;
 
                 foreach (var apparel in pawn.Map.listerThings.ThingsInGroup(ThingRequestGroup.Apparel).OfType<Apparel>().Where(desiredItem.Allows)) {
-                    if (!ValidApparelFor(apparel, pawn) || !pawn.CanReserveAndReach(apparel, PathEndMode.OnCell, pawn.NormalMaxDanger())) {
+                    if (!ValidApparelFor(apparel, pawn)) {
                         continue;
                     }
 
-                    var rawScore = OptimizeApparel.ApparelScoreRaw(pawn, apparel);
+                    var apparelScore = OptimizeApparel.ApparelScoreGain(pawn, apparel, OptimizeApparel.wornApparelScores);
+                    if (apparelScore < 0.05f) continue;
+
                     var distance = pawn.Position.DistanceToSquared(apparel.Position);
-                    if (rawScore > bestRawScore
-                        || (Mathf.Approximately(rawScore, bestRawScore) && apparel.HitPoints > bestHitPoints)
-                        || (Mathf.Approximately(rawScore, bestRawScore) && apparel.HitPoints == bestHitPoints && distance < bestDistance)) {
+                    if (apparelScore > bestApparelScore || (Mathf.Approximately(apparelScore, bestApparelScore) && distance < bestDistance)) {
                         bestApparel = apparel;
-                        bestRawScore = rawScore;
-                        bestHitPoints = apparel.HitPoints;
+                        bestApparelScore = apparelScore;
                         bestDistance = distance;
                     }
                 }
 
                 if (bestApparel != null) {
-                    var conflictingWornApparel = FirstConflictingWornApparel(pawn, wornApparel, desiredApparel, bestApparel);
-                    if (conflictingWornApparel != null) {
-                        return JobMaker.MakeJob(RemoveApparel, conflictingWornApparel);
-                    }
-
                     return JobMaker.MakeJob(EquipApparel, bestApparel);
                 }
             }
@@ -143,16 +136,6 @@ namespace Inventory {
 
             return Utility.ShouldAttemptToEquip(pawn, apparel);
         }
-
-        private Apparel FirstConflictingWornApparel(Pawn pawn, List<Apparel> wornApparel, List<Item> desiredApparel, Apparel desiredMapApparel) {
-            var desiredSlots = ApparelSlotMaker.Create(pawn.def.race.body, desiredMapApparel.def);
-            return wornApparel
-                .Where(worn => desiredSlots.Intersects(ApparelSlotMaker.Create(pawn.def.race.body, worn.def)))
-                .Where(worn => !desiredApparel.Any(item => item.Allows(worn)))
-                .OrderByDescending(worn => OptimizeApparel.ApparelScoreRaw(pawn, worn))
-                .FirstOrDefault();
-        }
-
 
         private Job SatisfyLoadoutItemsJob(Pawn pawn, Loadout loadout) {
             return null;
