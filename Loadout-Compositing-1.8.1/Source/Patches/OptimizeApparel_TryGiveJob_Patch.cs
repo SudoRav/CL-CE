@@ -54,13 +54,19 @@ namespace Inventory
 
         public static bool ShouldDrop(Pawn pawn, Apparel apparel)
         {
-            // We don't care in this branch.
-            if (!ModBase.settings.onlyItemsFromLoadout)
+            var loadout = pawn.TryGetComp<LoadoutComponent>()?.Loadout;
+            if (loadout == null)
             {
                 return false;
             }
 
-            return !pawn.TryGetComp<LoadoutComponent>()?.Loadout.Desires(apparel) ?? false;
+            if (!ModBase.settings.onlyItemsFromLoadout && !loadout.NeedsUpdate)
+            {
+                return false;
+            }
+
+            var desiredApparel = loadout.HypotheticalWornApparel(loadout.CurrentState, pawn.def.race.body);
+            return !desiredApparel.Any(item => item.Allows(apparel));
         }
 
         public static bool Matches(List<CodeInstruction> instructions, int i)

@@ -14,6 +14,7 @@ namespace Inventory {
         private Dictionary<Pawn, int> nextUpdateTick = new Dictionary<Pawn, int>();
 
         private static JobDef EquipApparel => JobDefOf.Wear;
+        private static JobDef RemoveApparel => JobDefOf.RemoveApparel;
         private static JobDef EquipItem => JobDefOf.TakeInventory;
         private static JobDef HoldItem => JobDefOf.Equip;
         private static JobDef UnloadItem => InvJobDefOf.CL_UnloadInventory;
