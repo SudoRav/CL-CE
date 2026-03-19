@@ -108,32 +108,12 @@ namespace Inventory {
         }
 
         public static bool ThingInLoadout(Pawn_InventoryTracker inventory, Thing thing) {
-            if (!inventory.pawn.IsValidLoadoutHolder()) return false;
-
-            var comp = inventory.pawn.TryGetComp<LoadoutComponent>();
-            return comp?.Loadout?.Desires(thing, true) ?? false;
+            return false;
         }
 
         // precondition: the thing pointed to by `thingIndex` must be in the pawns loadout
         public static bool ShouldDropThing(Pawn_InventoryTracker inventory, Thing thing, ref ThingCount count) {
-            var comp = inventory.pawn.GetComp<LoadoutComponent>();
-
-            var item = comp.Loadout.ItemsAccepting(thing).FirstOrDefault();
-
-            if (item is null) {
-                count = new ThingCount(thing, thing.stackCount);
-                return true;
-            }
-            
-            var allThings = inventory.pawn.InventoryAndEquipment().ToList();
-            var currentQuantity = item.CountIn(allThings);
-            var desiredQuantity = comp.Loadout.DesiredCount(allThings, item);
-
-            var difference = currentQuantity - desiredQuantity;
-            if (difference <= 0) return false;
-            
-            count = new ThingCount(thing, Mathf.Min(difference, thing.stackCount));
-            return true;
+            return false;
         }
 
     }

@@ -10,11 +10,7 @@ namespace Inventory {
     public static class DropUnusedInventory_Patch {
 
         public static bool Prefix(Pawn pawn, Thing thing) {
-            if (!pawn.IsValidLoadoutHolder()) {
-                return true;
-            }
-            
-            return !(pawn.TryGetComp<LoadoutComponent>()?.Loadout.Desires(thing) ?? false);
+            return true;
         }
 
     }
