@@ -1,0 +1,48 @@
+name: Build Release
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: prebuild
+      run: |
+        rm -rf AssemblyPublicizer csc csc.zip
+        git clone https://github.com/CombatExtended-Continued/AssemblyPublicizer
+        mkdir -p Assemblies
+        mkdir -p ${{ runner.temp }}/downloads
+        wget https://github.com/CombatExtended-Continued/roslyn/releases/download/CSC-13/csc.zip
+        unzip csc.zip
+    - name: remove loader
+      run: |
+        rm Assemblies/CombatExtendedLoader.dll
+    - name: build core
+      run: |
+        sed -i "s_UNKNOWN_$(git rev-parse HEAD | head -c 10)-rel_" Source/CombatExtended/Version.cs
+        TEMP=${{ runner.temp }}/ python Make.py --csproj Source/CombatExtended/CombatExtended.csproj --output Assemblies/CombatExtended.dll --download-libs --all-libs --publicizer $PWD/AssemblyPublicizer --csc $PWD/csc
+    - name: build compat
+      run: |
+        TEMP=${{ runner.temp }}/ python BuildCompat.py --csc $PWD/csc
+    - name: package
+      run: |
+        mkdir CombatExtended
+        cp -r Assemblies/ About/ Defs/ Languages/ Patches/ Royalty/ Ideology/ Biotech/ Anomaly/ Odyssey/ Sounds/ Textures/ ModPatches/ LoadFolders.xml README.md SupportedThirdPartyMods.md CombatExtended
+        zip -9 -r CombatExtended.zip CombatExtended
+    - name: Upload Package
+      id: upload-package
+      uses: actions/upload-release-asset@v1
+      
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: CombatExtended.zip
+        asset_name: CombatExtended-${{ github.event.release.tag_name }}.zip
+        asset_content_type: application/octet-stream
+      

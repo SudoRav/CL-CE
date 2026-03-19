@@ -1,0 +1,185 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using RimWorld;
+using UnityEngine;
+using Verse;
+
+namespace Inventory {
+
+    public class Loadout : IExposable {
+        public List<LoadoutElement> elements;
+        private List<Item> itemsToRemove;
+        private LoadoutState currentState;
+        private bool needsUpdate = false;
+
+        private bool panicMode = false;
+        private LoadoutState priorState = null;
+
+        public IEnumerable<Tag> AllTags => elements.Select(elem => elem.Tag);
+        public IEnumerable<Item> AllItems => AllTags.SelectMany(t => t.requiredItems);
+        public IEnumerable<Tag> Tags => TagsWith(currentState);
+
+        public bool NeedsUpdate => needsUpdate;
+        public bool InPanicMode => panicMode;
+        public LoadoutState CurrentState => currentState;
+        public List<Item> ThingsToRemove => itemsToRemove;
+
+        public IEnumerable<LoadoutElement> AllElements => elements;
+        public IEnumerable<LoadoutElement> Elements => elements.Where(e => e.Active(currentState));
+        public IEnumerable<LoadoutElement> ElementsWith(LoadoutState state) => elements.Where(e => e.Active(state));
+
+        public IEnumerable<Tag> TagsWith(LoadoutState state) => elements.Where(e => e.Active(state)).Select(e => e.Tag);
+        public IEnumerable<Item> Items => Tags.SelectMany(t => t.requiredItems);
+        public IEnumerable<Item> ItemsWith(LoadoutState state) => TagsWith(state).SelectMany(t => t.requiredItems);
+
+        public Loadout() {
+            elements = new List<LoadoutElement>();
+            itemsToRemove = new List<Item>();
+        }
+
+        public void SetState(LoadoutState state) {
+            if ( panicMode ) {
+                Messages.Message(Strings.CantOverridePanicMode, MessageTypeDefOf.CautionInput, false);
+                return;
+            }
+
+            var changedElems = new List<LoadoutElement>();
+            foreach (var elem in AllElements) {
+                if ( elem.Active(CurrentState) != elem.Active(state)) {
+                    changedElems.Add(elem);
+                }
+            }
+
+            currentState = state;
+            
+            foreach (var elem in changedElems) {
+                UpdateState(elem, elem.Active(state));
+            }
+        }
+
+        public void UpdateState(LoadoutElement element, bool active) {  
+            foreach (var item in element.Tag.requiredItems.Where(item => !item.Def.IsApparel)) {
+                if (!active) {
+                    AddItemToRemove(item);
+                }
+            }
+
+            if (ModBase.settings.immediatelyResolveLoadout) {
+                needsUpdate = true;
+            }
+        }
+
+        public void RequiresUpdate() {
+            needsUpdate = true;
+        }
+        public void Updated() {
+            needsUpdate = false;
+        }
+
+        private void AddItemToRemove(Item item) {
+            itemsToRemove.Add(item);
+        }
+
+        public int IndexOf(Tag tag) {
+            return elements.FirstIndexOf(le => le.Tag == tag);
+        }
+
+        public float WeightAtWhichLoadoutDesires(Thing thing) {
+            const float priorityMultiplier = 5;
+
+            var tag = Tags.FirstOrDefault(t => t.ItemsMatching(thing).Any());
+            if (tag == null) return 0;
+
+            var tagIndex = IndexOf(tag);
+            var tagPriority = Mathf.Pow(priorityMultiplier, elements.Count - tagIndex);
+            return tagPriority;
+        }
+
+        public int DesiredCount(List<Thing> pawnGear, Item curItem) {
+            // list of things which our current item accepts
+            var acceptedThings = pawnGear.Where(curItem.Allows).ToList();
+            // all items besides our current item
+            var otherItems = Items.Except(curItem);
+
+            var desiredCount = curItem.Quantity;
+
+            foreach (var item in otherItems) {
+                var potentiallyOwnedStackCount = acceptedThings.Where(item.Allows).Sum(thing => thing.stackCount);
+                desiredCount += Mathf.Min(item.Quantity, potentiallyOwnedStackCount);
+            }
+
+            return desiredCount;
+        }
+
+        public bool Desires(Thing thing, bool allTags = false) {
+            return (allTags ? AllTags : Tags).Any(t => t.ItemsMatching(item => item.Allows(thing)).Any());
+        }
+
+        public IEnumerable<Item> ItemsAccepting(Thing thing) {
+            return Tags.SelectMany(t => t
+                .ItemsMatching(item => item.Allows(thing)));
+        }
+
+        public IEnumerable<Item> HypotheticalWornApparel(LoadoutState state, BodyDef def) {
+            var itemsWithPrios = TagsWith(state).SelectMany(t => t
+                    .ItemsWithTagMatching(item => item.Def.IsApparel)
+                    .Select(tuple => new Tuple<Item, Tag, int>(tuple.Item2, tuple.Item1, elements.FindIndex(e => e.Tag == tuple.Item1))))
+                .ToList();
+
+            var wornApparel = ApparelUtility.WornApparelFor(def, itemsWithPrios) ?? new List<Tuple<Item, Tag>>();
+            return wornApparel.Select(tuple => tuple.Item1);
+        }
+
+        public IEnumerable<Tuple<Item, Tag>> HypotheticalWornApparelWithTag(LoadoutState state, BodyDef def) {
+            var itemsWithPrios = TagsWith(state).SelectMany(t => t
+                    .ItemsWithTagMatching(item => item.Def.IsApparel)
+                    .Select(tuple => new Tuple<Item, Tag, int>(tuple.Item2, tuple.Item1, elements.FindIndex(e => e.Tag == tuple.Item1))))
+                .ToList();
+
+            var wornApparel = ApparelUtility.WornApparelFor(def, itemsWithPrios) ?? new List<Tuple<Item, Tag>>();
+            return wornApparel;
+        }
+
+        public IEnumerable<Item> DesiredItems(List<Thing> heldThings) {
+            var desiredThings = Items.Where(t => !t.Def.IsApparel);
+            foreach (var thing in desiredThings) {
+                var count = heldThings.Where(heldThing => thing.Allows(heldThing))
+                    .Sum(heldThing => heldThing.stackCount);
+
+                if (count >= thing.Quantity)
+                    continue;
+
+                yield return thing;
+            }
+        }
+
+        public void ActivatePanicMode(LoadoutState newState) {
+            priorState = currentState;
+            SetState(newState);
+
+            panicMode = true;
+            RequiresUpdate();
+        }
+
+        public void DeactivatePanicMode() {
+            panicMode = false;
+            SetState(priorState);
+            priorState = null;
+        }
+
+        public void ExposeData() {
+            Scribe_Values.Look(ref needsUpdate, nameof(needsUpdate), false);
+            Scribe_Collections.Look(ref elements, nameof(elements), LookMode.Deep);
+            Scribe_Collections.Look(ref itemsToRemove, nameof(itemsToRemove), LookMode.Deep);
+            Scribe_References.Look(ref currentState, nameof(currentState));
+
+            Scribe_Values.Look(ref panicMode, nameof(panicMode));
+            Scribe_References.Look(ref priorState, nameof(priorState));
+
+            itemsToRemove = new List<Item>();
+            elements ??= new List<LoadoutElement>();
+        }
+    }
+
+}

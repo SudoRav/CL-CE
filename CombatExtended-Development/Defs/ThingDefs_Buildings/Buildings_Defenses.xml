@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<!--========================= Barbed Wire =============================-->
+
+	<ThingDef ParentName="BuildingBase">
+		<defName>CE_BarbedWire</defName>
+		<label>barbed wire</label>
+		<description>Cheap defence system that slows down enemies.</description>
+		<thingClass>Building</thingClass>
+		<category>Building</category>
+		<graphicData>
+			<texPath>Things/Building/BarbedWire/BarbedWire_Atlas</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<shaderType>CutoutComplex</shaderType>
+			<linkType>Basic</linkType>
+			<linkFlags>
+				<li>Custom1</li>
+			</linkFlags>
+		</graphicData>
+		<uiIconPath>Things/Building/BarbedWire/BarbedWire_Icon</uiIconPath>
+		<altitudeLayer>Building</altitudeLayer>
+		<pathCost>80</pathCost>
+		<passability>PassThroughOnly</passability>
+		<fillPercent>0.0</fillPercent>
+		<stuffCategories>
+			<li>Metallic</li>
+			<li>Woody</li>
+		</stuffCategories>
+		<costStuffCount>1</costStuffCount>
+		<costList>
+			<Steel>1</Steel>
+		</costList>
+		<statBases>
+			<MaxHitPoints>150</MaxHitPoints>
+			<Beauty>-30</Beauty>
+			<WorkToBuild>120</WorkToBuild>
+			<Flammability>0</Flammability>
+		</statBases>
+		<building>
+			<paintable>true</paintable>
+			<isInert>true</isInert>
+			<ai_chillDestination>false</ai_chillDestination>
+			<blueprintGraphicData>
+				<texPath>Things/Building/Linked/Fence_Blueprint</texPath>
+				<graphicClass>Graphic_Appearances</graphicClass>
+			</blueprintGraphicData>
+		</building>
+		<drawStyleCategory>Defenses</drawStyleCategory>
+		<filthLeaving>SlagRubble</filthLeaving>
+		<rotatable>false</rotatable>
+		<selectable>true</selectable>
+		<neverMultiSelect>true</neverMultiSelect>
+		<terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+		<designationCategory>Security</designationCategory>
+		<staticSunShadowHeight>0.0</staticSunShadowHeight>
+		<researchPrerequisites>
+			<li>Smithing</li>
+		</researchPrerequisites>
+	</ThingDef>
+
+	<!--========================= Embrasures =============================-->
+
+	<ThingDef ParentName="Wall" Name="EmbrasureBase">
+		<defName>CE_Embrasure</defName>
+		<label>embrasure</label>
+		<thingClass>Building</thingClass>
+		<category>Building</category>
+		<description>A wall with a firing port to allow shooting from relative safety.</description>
+		<replaceTags>
+			<li>Wall</li>
+		</replaceTags>
+		<graphicData>
+			<texPath>Things/Building/Embrasure</texPath>
+		</graphicData>
+		<uiIconPath>Things/Building/Embrasure/EmbrasureSmooth_MenuIcon</uiIconPath>
+		<uiIconPathsStuff Inherit="False">
+			<li>
+				<appearance>Planks</appearance>
+				<iconPath>Things/Building/Embrasure/EmbrasurePlanks_MenuIcon</iconPath>
+			</li>
+			<li>
+				<appearance>Bricks</appearance>
+				<iconPath>Things/Building/Embrasure/EmbrasureBricks_MenuIcon</iconPath>
+			</li>
+		</uiIconPathsStuff>
+		<statBases>
+			<WorkToBuild>150</WorkToBuild>
+		</statBases>
+		<costStuffCount>5</costStuffCount>
+		<fillPercent>0.7</fillPercent>
+		<disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError>
+		<building>
+			<blueprintGraphicData>
+				<texPath>Things/Building/Embrasure/Embrasure_Blueprint_Atlas</texPath>
+			</blueprintGraphicData>
+			<isStuffableAirtight>false</isStuffableAirtight>
+		</building>
+	</ThingDef>
+
+</Defs>

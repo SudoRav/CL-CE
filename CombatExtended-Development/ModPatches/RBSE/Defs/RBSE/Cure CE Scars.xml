@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<RecipeDef ParentName="SurgeryFlesh">
+		<defName>CureInjuryBlast</defName>
+		<label>cure blast</label>
+		<description>Cure blast.</description>
+		<workerClass>ScarRemoving.Recipe_RemoveHediff_noBrain</workerClass>
+		<jobString>Curing blast.</jobString>
+		<workAmount>2000</workAmount>
+		<surgerySuccessChanceFactor>1.55</surgerySuccessChanceFactor>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>MedicineUltratech</li>
+					</thingDefs>
+				</filter>
+				<count>3</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>MedicineUltratech</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<skillRequirements>
+			<Medicine>10</Medicine>
+		</skillRequirements>
+		<removesHediff>Blast</removesHediff>
+		<researchPrerequisite>RegenerativeMedicine</researchPrerequisite>
+		<!-- From RBSE's `SurgeryOld` Base, duplicated to avoid a load order requirement. -->
+		<effectWorking>Surgery</effectWorking>
+		<soundWorking>Recipe_Surgery</soundWorking>
+		<workSpeedStat>MedicalOperationSpeed</workSpeedStat>
+		<workSkill>Medicine</workSkill>
+		<workSkillLearnFactor>18</workSkillLearnFactor>
+		<recipeUsers>
+			<li>Human</li>
+			<li MayRequire="Ludeon.RimWorld.Anomaly">CreepJoiner</li>
+		</recipeUsers>
+	</RecipeDef>
+
+</Defs>

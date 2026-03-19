@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/HediffDef[defName="BS_PsychicArmor_Stage1"]/stages/li/statOffsets</xpath>
+		<value>
+			<statOffsets>
+				<ArmorRating_Blunt>2</ArmorRating_Blunt>
+				<ArmorRating_Sharp>1</ArmorRating_Sharp>
+			</statOffsets>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/HediffDef[defName="BS_PsychicArmor_Stage2"]/stages/li/statOffsets</xpath>
+		<value>
+			<statOffsets>
+				<ArmorRating_Blunt>4</ArmorRating_Blunt>
+				<ArmorRating_Sharp>2</ArmorRating_Sharp>
+			</statOffsets>
+		</value>
+	</Operation>
+
+</Patch>

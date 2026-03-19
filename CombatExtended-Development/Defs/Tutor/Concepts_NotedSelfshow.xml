@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<!--===================== Concepts taught through the learning readout, with no opportunity needed ===================-->
+
+	<ConceptDef>
+		<defName>CE_InventoryWeightBulk</defName>
+		<label>CE: Mass and bulk</label>
+		<priority>19</priority>
+		<helpText>You can order your colonists to pick up items and store them in their inventory. They are limited in this by their carry weight and bulk capacity.\n\nCarry weight is determined by movement capacity and the more weight a colonist is carrying, the slower they are.\n\nBulk represents the space in your colonists' pockets and can be increased by equipping loadbearing gear like backpacks and tactical vests. The more stuffed their pockets are, the slower they'll work, so only pick up things you actually need.\n\nYou can check a colonist's load by selecting them, clicking the INVENTORY button and hovering over the displayed bars.\n\nTo order a colonist to pick something up, select him, right-click an item and select the 'Pick up' option.</helpText>
+		<highlightTags>
+			<li>ITab-Gear-Closed</li>
+		</highlightTags>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_Loadouts</defName>
+		<label>CE: Loadouts</label>
+		<priority>18</priority>
+		<helpText>Colonists can be told to automatically pick up certain items to avoid inventory micromanagement. For example you can tell them to keep ammo for their primary weapon and they will stock up after a firefight.\n\nOpen the ASSIGN tab and press the 'Manage loadouts' button. Create a new loadout and set the items and quantity you want your colonists to keep. Then you can assign that loadout to your colonists and they will automatically manage their inventories.</helpText>
+		<highlightTags>
+			<li>MainTab-Assign-Closed</li>
+			<li>CE_ManageLoadouts</li>
+		</highlightTags>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_AmmoCrafting</defName>
+		<label>CE: Ammo crafting</label>
+		<priority>8</priority>
+		<helpText>Ensuring your colonists are supplied with quality ammo is vital to surviving on a Rimworld. Simple stone arrows can be obtained from the crafting but perform very poorly against opponents with advanced armor and clothing.\n\nSteel and plasteel arrows offer better penetration and can be made at the smithing bench once smithing is researched.\n\nResearch gunsmithing to unlock the loading bench, where you can craft ammo for most firearms. Artillery shells and grenades are made at the machining table.\n\nWhile most conventional ammo types can be made from simple raw materials, advanced ammo requires more exotic ingredients such as components, FSX or Prometheum.</helpText>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_ObtainingFSX</defName>
+		<label>CE: Obtaining FSX</label>
+		<priority>3</priority>
+		<helpText>FSX is the main ingredient for explosives such as frag grenades and mortar shells. You can obtain it either through traders or by taming boomrats and boomalopes, then harvesting the volatile chemicals they produce.\n\nOnce tamed they will produce a steady stream of FSX that your colonists will automatically harvest similar to other animal resources like wool and milk.\n\nYou can see your animal's current chemical fullness by selecting it and checking the readout in the lower-left corner.</helpText>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_ObtainingPrometheum</defName>
+		<label>CE: Obtaining Prometheum</label>
+		<priority>2</priority>
+		<helpText>Prometheum is used in most incendiary weapons such as incendiary mortar shells, AP-I rounds and molotovs. It is a highly flammable liquid that is harvested from the blazebulb plant.\n\nTo grow blazebulb, simply select a growing zone and set it to plant blazebulb.\n\nWarning: Blazebulbs are highly sensitive and have a chance to ignite if the surrounding temperature exceeds 28°C/82F. They will also leak puddles of Prometheum when damaged, which ignite on contact with air.\n\nMake sure your plantation has good climate control and is fire-proofed, otherwise it might quickly turn into a blazing inferno!</helpText>
+		<highlightTags>
+			<li>GrowingZoneSetPlant</li>
+		</highlightTags>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_CentipedeArmor</defName>
+		<label>CE: Fighting mechanoids</label>
+		<priority>1</priority>
+		<helpText>Warning: It is only a matter of time before mechanoids take notice of your arrival and start attacking. The larger models have heavy armor that is impervious to small-arms fire.\n\nFighting them requires powerful weapons such as heavy machine guns or explosives. You should keep a healthy stockpile of these weapons if you hope to survive for long.</helpText>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_ArmorSystem</defName>
+		<label>CE: New armor system</label>
+		<priority>50</priority>
+		<helpText>Combat Extended replaces the vanilla armor system with a penetration-based model. Blunt and sharp type weapons have armor penetration values which determine how much their damage is reduced by armor.\n\nAttacks that have less armor penetration than the armor value of a pawn are either deflected or fully mitigated, however armor values lower than the armor penetration will reduce damage based on the ratio of armor value to the attack's base armor penetration (e.g: if a pawn with an armor value of 8mm RHA is hit by a 10mm RHA projectile, the armor will block 80% of the damage).\nBlocked sharp damage is always turned into blunt damage and is checked against the blunt armor rating. The amount of blunt damage depends on the attack's base blunt penetration, which is affected by blocked sharp damage and blocked sharp penetration.\nIn the case of a deflection, a sharp attack is converted into blunt (preventing bleeding and internal organ damage) and is checked against the blunt armor rating. The amount of blunt damage depends on the attack's base blunt penetration and the pre-deflection remaining sharp penetration.\nA full mitigation happens when a blunt or sharp attack deals no damage because all armor penetration values are less than their armor rating. A sharp attack has to firstly be deflected to be fully mitigated.\n\nEnvironmental damage such as fire/electricity has no penetration and is simply reduced by the % of armor against that type.</helpText>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_SuppressionReaction</defName>
+		<label>CE: Suppression</label>
+		<priority>50</priority>
+		<helpText>All humans have a suppression meter, based on their mental break threshold and current mood. Any time gunfire passes by them, it will add to the meter based on projectile power and (lack of) worn armor. \n\nWhen someone's suppression threshold is reached they will panic, run for the nearest cover and become incapable of using aimed shot mode, making it a good tool to break up melee charges or reduce sniper accuracy. It will also impart a mood penalty, making them easier to suppress in the future.\n\nYou can recognize suppressed pawns by the yellow downwards arrow they're emitting.</helpText>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_Hunkering</defName>
+		<label>CE: Hunkering</label>
+		<priority>50</priority>
+		<helpText>If someone's suppression meter maxes out they will hunker in panic. This causes them to run for the nearest cover and lie down, unable to shoot back or take any action until their suppression ticks down, essentially removing them from the fight.\n\nHunkering pawns are marked by an orange downwards arrow.</helpText>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_WornBulk</defName>
+		<label>CE: Bulky clothing</label>
+		<priority>50</priority>
+		<helpText>Certain clothing items are very bulky and will hinder your colonists in their daily tasks, lowering work speed when worn. These items include things like armor and regular clothing made from certain materials such as hyperweave.\n\nYou can check the info-menu of a particular apparel to see its 'worn bulk' stat to see how much bulk it adds when equipped on a colonist.</helpText>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_Crouching</defName>
+		<label>CE: Crouching</label>
+		<priority>50</priority>
+		<helpText>Any drafted human will crouch when they are not moving, making them a smaller target. You can get a detailed breakdown by selecting a shooter and hovering the mouse over a target.\n\nCrouched pawns will make efficient use of nearby cover, only revealing enough of their head to aim and shoot.</helpText>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_NightVision</defName>
+		<label>CE: Night vision</label>
+		<priority>50</priority>
+		<helpText>Darkness significantly reduces accuracy at longer ranges. This penalty can be offset with night vision from implants, apparel, weapons, or innate racial trait. Night vision does not stack across categories (night vision from a recon helmet will not combine with night vision from bionic eyes). Instead, only the highest efficiency source available will be used.</helpText>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_MuzzleFlash</defName>
+		<label>CE: Muzzle flash</label>
+		<priority>50</priority>
+		<helpText>Many weapons produce a muzzle flash in darkness, momentarily lighting up the shooter's position and exposing them to more accurate fire for a short time. A high rate of fire or larger muzzle flash makes the shooter easier to target.</helpText>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_TargettedModes</defName>
+		<label>CE: Called shots</label>
+		<priority>50</priority>
+		<helpText>After getting 2.5 weapon handling stat on a pawn, which is 10 shooting skill with 100% manipulation, you can target body part areas of targets in the open.</helpText>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_Bipods</defName>
+		<label>CE: Bipods</label>
+		<priority>50</priority>
+		<helpText>Certain guns like machine guns and sniper rifles have bipods built into them for you to take advantage of. Beware that while guns can be fired without setting up their bipods, they will suffer a penalty to their accuracy. On the other hand, some guns get a bonus if you use their bipods. How bipods are set up can be set at combat extended settings, manual and automatic set up. Automatic set up tries to set up the weapon's bipod and takes you weapon's fire mode into account to decide when to set up the bipod, the fire mode which activates auto set up can be seen in the weapon's information tab. Manual set up allows for taking control over when to set up the weapon's bipod which can be toggled between opening and closing the bipod order. The time it takes to set a bipod up is affected by the wielder's weapons handling stat and the height of the cover they are standing behind.</helpText>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_TargettedModesMelee</defName>
+		<label>CE: Targetting in melee</label>
+		<priority>50</priority>
+		<helpText>After getting 8 melee skill it is possible to target body part areas in melee fighting, with the drawback of lower chance to hit (0.8x for bottom, 0.7x for top). After reaching 16 melee skill it also becomes possible to aim for exact specific body parts in those areas.\n\ when targetting specific body part (part, not height), the selected part won't be always hit. The chance to actually hit it is (((part coverage) * (attacker melee skill - 15) * manipulation) - ((Defender melee skill / 50) * moving), if the attack misses the bodypart it hits selected height area.</helpText>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_GiveAmmo</defName>
+		<label>CE: Giving ammo</label>
+		<priority>50</priority>
+		<helpText>Your drafted colonists can be manually ordered to give ammo to other friendly pawns, be it humanoid or mechanoid, if they are carrying ammo the recepient's gun can fire. Select the giver pawn and right-click on the recipient, then choose how much of which ammo type to give.</helpText>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_ParentLoadouts</defName>
+		<label>CE: Parent loadouts</label>
+		<priority>50</priority>
+		<helpText>Loadouts can be assigned a 'parent loadout'. Colonists will carry everything in the parent loadout in addition to their assigned loadout. This is useful for creating base loadouts used across multiple colonists that can be quickly and easily changed.</helpText>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>CE_AdHocLoadouts</defName>
+		<label>CE: Ad hoc loadouts</label>
+		<priority>50</priority>
+		<helpText>Loadouts can be designated as 'ad hoc', which automatically includes the colonist's currently equipped weapon and ammo for it as part of their loadout. Ad hoc loadouts include additional options to set how many magazines' worth of ammo your colonst will carry for their weapon, up to set limits of mass and bulk.</helpText>
+	</ConceptDef>
+
+</Defs>

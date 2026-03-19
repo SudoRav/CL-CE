@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+	<!-- ====================== Respirator ===================== -->
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="Apparel_Respirator"]/apparel/layers</xpath>
+		<value>
+			<layers>
+				<li>Overhead</li>
+			</layers>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="Apparel_Respirator"]/apparel/bodyPartGroups</xpath>
+		<value>
+			<bodyPartGroups>
+				<li>Teeth</li>
+			</bodyPartGroups>
+		</value>
+	</Operation>
+</Patch>

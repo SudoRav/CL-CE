@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_DisruptorFlare</defName>
+		<label>disruptor flare shell</label>
+		<ammoTypes>
+			<Ammo_FlareBioferrite>Bullet_FlareBioferriteDirect</Ammo_FlareBioferrite>
+		</ammoTypes>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ==================== Projectiles ========================== -->
+
+
+	<ThingDef ParentName="BaseBulletCE" MayRequire="Ludeon.RimWorld.Anomaly">
+		<defName>Bullet_FlareBioferriteDirect</defName>
+		<thingClass>CombatExtended.ProjectileCE_SpawnsThing</thingClass>
+		<label>bioferrite flare</label>
+		<graphicData>
+			<texPath>Things/Projectile/Bullet_big</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<color>(255, 95, 83)</color>
+			<shaderType>MoteGlow</shaderType>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Smoke</damageDef>
+			<suppressionFactor>1.0</suppressionFactor>
+			<flyOverhead>false</flyOverhead>
+			<dangerFactor>0.0</dangerFactor>
+			<armorPenetrationSharp>0</armorPenetrationSharp>
+			<armorPenetrationBlunt>0</armorPenetrationBlunt>
+			<landedEffecter>DisruptorFlareLanded</landedEffecter>
+			<spawnsThingDef>CE_DisruptorFlareSmall</spawnsThingDef>
+			<speed>60</speed>
+			<dropsCasings>false</dropsCasings>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_ProjectileFleck">
+				<FleckDatas>
+					<li>
+						<fleck>Fleck_CE_BioferriteGlow</fleck>
+						<emissionsPerTick>6</emissionsPerTick>
+						<rotation>0~360</rotation>
+						<scale>2.5</scale>
+						<flecksPerEmission>1</flecksPerEmission>
+						<originOffset>-0.5</originOffset>
+					</li>
+				</FleckDatas>
+			</li>
+		</comps>
+	</ThingDef>
+
+</Defs>

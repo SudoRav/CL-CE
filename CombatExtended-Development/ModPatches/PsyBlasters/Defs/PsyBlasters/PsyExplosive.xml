@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+
+	<ThingDef ParentName="BaseExplosiveBullet">
+		<defName>Bullet_PsyblasterRocket</defName>
+		<thingClass>CombatExtended.Compatibility.PsyBlastersCompat.PsychicBlasterRocketCE</thingClass>
+		<label>psyblaster rocket</label>
+		<graphicData>
+			<texPath>Things/Projectile/PB_rocket_shot</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<shaderType>TransparentPostLight</shaderType>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Bomb</damageDef>
+			<speed>73</speed>
+			<explosionRadius>8.9</explosionRadius>
+			<damageAmountBase>0</damageAmountBase>
+		</projectile>
+		<modExtensions>
+			<li Class="CombatExtended.Compatibility.PsyBlastersCompat.PsychicProjectileExtension">
+				<psyDamageMultiplier>1.5</psyDamageMultiplier>
+			</li>
+		</modExtensions>
+	</ThingDef>
+
+</Defs>

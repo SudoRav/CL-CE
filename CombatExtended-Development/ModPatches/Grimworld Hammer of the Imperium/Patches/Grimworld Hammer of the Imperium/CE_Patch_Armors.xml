@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+	
+	<!-- Headwear -->
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[@Name="GW_HOI_Hat_CapBase"]/statBases/StuffEffectMultiplierArmor</xpath>
+		<value>
+			<StuffEffectMultiplierArmor>2.0</StuffEffectMultiplierArmor>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[
+			defName="GW_HOI_PriestHat" or
+			defName="GW_HOI_PriestHood" or
+			defName="GW_HOI_PriestHoodDown" or
+			defName="GW_HOI_EngineseererHood" or
+			defName="GW_HOI_CommissarCap" or
+			defName="GW_HOI_CadianOfficerCap" or
+			defName="GW_HOI_Cadian_Fieldcap"
+			]/statBases</xpath>
+		<value>
+			<Bulk>1.5</Bulk>
+			<WornBulk>0.5</WornBulk>
+			<ArmorRating_Sharp>0.16</ArmorRating_Sharp>
+			<ArmorRating_Blunt>0.32</ArmorRating_Blunt>
+		</value>
+	</Operation>
+
+	<!-- Wraps -->
+
+	<!-- not used in base Hammer, but it is used in Regiments of Renown by the Tallarn, which requires Hammer -->
+	<Operation Class="PatchOperationAddModExtension">
+		<xpath>Defs/ThingDef[@Name="GW_HOI_Hat_FullWrapBase"]</xpath>
+		<value>
+			<li Class="CombatExtended.PartialArmorExt">
+				<stats>
+					<li>
+						<ArmorRating_Sharp>0.5</ArmorRating_Sharp>
+						<parts>
+							<li>Nose</li>
+						</parts>
+					</li>
+					<li>
+						<ArmorRating_Blunt>0.5</ArmorRating_Blunt>
+						<parts>
+							<li>Nose</li>
+						</parts>
+					</li>
+					<li>
+						<ArmorRating_Sharp>1</ArmorRating_Sharp>
+						<parts>
+							<li>Eye</li>
+						</parts>
+					</li>
+					<li>
+						<ArmorRating_Blunt>2</ArmorRating_Blunt>
+						<parts>
+							<li>Eye</li>
+						</parts>
+					</li>
+					<li>
+						<ArmorRating_Sharp>0.50</ArmorRating_Sharp>
+						<parts>
+							<li>Jaw</li>
+						</parts>
+					</li>
+					<li>
+						<ArmorRating_Blunt>0.50</ArmorRating_Blunt>
+						<parts>
+							<li>Jaw</li>
+						</parts>
+					</li>
+				</stats>
+			</li>
+		</value>
+	</Operation>
+
+	<!-- Gasmasks -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[@Name="GW_HOI_Hat_GasMaskBase"]/statBases</xpath>
+		<value>
+			<Bulk>3</Bulk>
+			<WornBulk>1</WornBulk>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[@Name="GW_HOI_Hat_GasMaskBase"]/statBases/Mass</xpath>
+		<value>
+			<Mass>0.8</Mass>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[@Name="GW_HOI_Hat_GasMaskBase"]/statBases/StuffEffectMultiplierArmor</xpath>
+		<value>
+			<StuffEffectMultiplierArmor>1.0</StuffEffectMultiplierArmor>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[@Name="GW_HOI_Hat_GasMaskBase"]/apparel/layers</xpath>
+		<value>
+			<layers Inherit="False">
+				<li>StrappedHead</li>
+			</layers>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[@Name="GW_HOI_Hat_GasMaskBase"]/equippedStatOffsets</xpath>
+		<value>
+			<SmokeSensitivity>-1</SmokeSensitivity>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAddModExtension">
+		<xpath>Defs/ThingDef[@Name="GW_HOI_Hat_GasMaskBase"]</xpath>
+		<value>
+			<li Class="CombatExtended.ApparelHediffExtension">
+				<hediff>WearingGasMask</hediff>
+			</li>
+			<li Class="CombatExtended.ApperalRenderingExtension">
+				<HideHair>false</HideHair>
+				<HideBeard>true</HideBeard>
+			</li>
+		</value>
+	</Operation>
+
+	<!-- Webbing -->
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CadianCombatWebbing" or defName="GW_HOI_Cadian_OfficerGorget"]/apparel/layers/li[.="Belt"]</xpath>
+		<value>
+			<li>Webbing</li>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CadianCombatWebbing" or defName="GW_HOI_Cadian_OfficerGorget"]/apparel/bodyPartGroups/li[.="Waist"]</xpath>
+		<value>
+			<li>Shoulders</li>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CadianCombatWebbing"]/statBases</xpath>
+		<value>
+			<Bulk>10</Bulk>
+			<WornBulk>5</WornBulk>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="GW_HOI_Cadian_OfficerGorget"]/statBases</xpath>
+		<value>
+			<Bulk>0.5</Bulk>
+			<WornBulk>0</WornBulk>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CadianCombatWebbing" or defName="GW_HOI_Cadian_OfficerGorget"]/statBases/StuffEffectMultiplierArmor</xpath>
+		<value>
+			<StuffEffectMultiplierArmor>3.0</StuffEffectMultiplierArmor>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CadianCombatWebbing"]/equippedStatOffsets</xpath>
+		<value>
+			<CarryBulk>20</CarryBulk>
+			<ReloadSpeed>0.1</ReloadSpeed>
+		</value>
+	</Operation>
+
+	<!-- Basic uniforms -->
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[
+			defName="GW_HOI_Cadian_Fatigues" or
+			defName="GW_HOI_Cadian_FatiguesGreen" or
+			defName="GW_HOI_Cadian_CrewJumpsuit" or
+			defName="GW_HOI_CadianCommanderFatigues" or
+			defName="GW_HOI_CommissarUniform"
+			]/statBases/StuffEffectMultiplierArmor</xpath>
+		<value>
+			<StuffEffectMultiplierArmor>4</StuffEffectMultiplierArmor>
+			<Bulk>4</Bulk>
+			<WornBulk>2</WornBulk>
+		</value>
+	</Operation>
+
+	<!-- Cadian Flak Armor -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="GW_HOI_Cadian_FlakArmor"]/statBases</xpath>
+		<value>
+			<Bulk>10</Bulk>
+			<WornBulk>5</WornBulk>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_Cadian_FlakArmor"]/statBases/ArmorRating_Sharp</xpath>
+		<value>
+			<ArmorRating_Sharp>12</ArmorRating_Sharp>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_Cadian_FlakArmor"]/statBases/ArmorRating_Blunt</xpath>
+		<value>
+			<ArmorRating_Blunt>18</ArmorRating_Blunt>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="GW_HOI_Cadian_CrewArmor"]/statBases</xpath>
+		<value>
+			<Bulk>7.5</Bulk>
+			<WornBulk>3.5</WornBulk>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_Cadian_CrewArmor"]/statBases/ArmorRating_Sharp</xpath>
+		<value>
+			<ArmorRating_Sharp>9</ArmorRating_Sharp>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_Cadian_CrewArmor"]/statBases/ArmorRating_Blunt</xpath>
+		<value>
+			<ArmorRating_Blunt>14</ArmorRating_Blunt>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="GW_HOI_Cadian_Helmet"]/statBases</xpath>
+		<value>
+			<Bulk>4</Bulk>
+			<WornBulk>1</WornBulk>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_Cadian_Helmet"]/statBases/ArmorRating_Sharp</xpath>
+		<value>
+			<ArmorRating_Sharp>6.5</ArmorRating_Sharp>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_Cadian_Helmet"]/statBases/ArmorRating_Blunt</xpath>
+		<value>
+			<ArmorRating_Blunt>9.75</ArmorRating_Blunt>
+		</value>
+	</Operation>
+
+	<!-- crew helmet and other "light" helmets -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[
+			defName="GW_HOI_Cadian_CrewHelmet" or
+			defName="GW_HOI_Cadian_WhiteShieldHelmet" or
+			defName="GW_HOI_CadianPsyker_Helmet"
+			]/statBases</xpath>
+		<value>
+			<Bulk>3</Bulk>
+			<WornBulk>0.8</WornBulk>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[
+			defName="GW_HOI_Cadian_CrewHelmet" or
+			defName="GW_HOI_Cadian_WhiteShieldHelmet" or
+			defName="GW_HOI_CadianPsyker_Helmet"
+			]/statBases/ArmorRating_Sharp</xpath>
+		<value>
+			<ArmorRating_Sharp>5.25</ArmorRating_Sharp>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[
+			defName="GW_HOI_Cadian_CrewHelmet" or
+			defName="GW_HOI_Cadian_WhiteShieldHelmet" or
+			defName="GW_HOI_CadianPsyker_Helmet"
+			]/statBases/ArmorRating_Blunt</xpath>
+		<value>
+			<ArmorRating_Blunt>8.25</ArmorRating_Blunt>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="GW_HOI_Cadian_CrewHelmetSoft"]/statBases</xpath>
+		<value>
+			<Bulk>3.5</Bulk>
+			<WornBulk>0.9</WornBulk>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_Cadian_CrewHelmetSoft"]/statBases/ArmorRating_Sharp</xpath>
+		<value>
+			<ArmorRating_Sharp>5.25</ArmorRating_Sharp>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_Cadian_CrewHelmetSoft"]/statBases/ArmorRating_Blunt</xpath>
+		<value>
+			<ArmorRating_Blunt>12.25</ArmorRating_Blunt>
+		</value>
+	</Operation>
+
+	<!-- Kasrkin, Castellan, and Officer Carapace -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[
+			defName="GW_HOI_CadianKasrkin_FlakArmor" or
+			defName="GW_HOI_CadianCommanderArmor" or
+			defName="GW_HOI_CadianOfficerArmor"
+			]/statBases</xpath>
+		<value>
+			<Bulk>15</Bulk>
+			<WornBulk>5</WornBulk>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[
+			defName="GW_HOI_CadianKasrkin_FlakArmor" or
+			defName="GW_HOI_CadianCommanderArmor" or
+			defName="GW_HOI_CadianOfficerArmor"]/statBases/ArmorRating_Sharp</xpath>
+		<value>
+			<ArmorRating_Sharp>14</ArmorRating_Sharp>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[
+			defName="GW_HOI_CadianKasrkin_FlakArmor" or
+			defName="GW_HOI_CadianCommanderArmor" or
+			defName="GW_HOI_CadianOfficerArmor"
+			]/statBases/ArmorRating_Blunt</xpath>
+		<value>
+			<ArmorRating_Blunt>22</ArmorRating_Blunt>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAddModExtension">
+		<xpath>Defs/ThingDef[
+			defName="GW_HOI_CadianKasrkin_FlakArmor" or
+			defName="GW_HOI_CadianCommanderArmor" or
+			defName="GW_HOI_CadianOfficerArmor"
+			]</xpath>
+		<value>
+			<li Class="CombatExtended.PartialArmorExt">
+				<stats>
+					<li>
+						<ArmorRating_Sharp>0.90</ArmorRating_Sharp>
+						<parts>
+							<li>Leg</li>
+						</parts>
+					</li>
+					<li>
+						<ArmorRating_Blunt>0.90</ArmorRating_Blunt>
+						<parts>
+							<li>Leg</li>
+						</parts>
+					</li>
+					<li>
+						<ArmorRating_Sharp>0.80</ArmorRating_Sharp>
+						<parts>
+							<li>Arm</li>
+						</parts>
+					</li>
+					<li>
+						<ArmorRating_Blunt>0.80</ArmorRating_Blunt>
+						<parts>
+							<li>Arm</li>
+						</parts>
+					</li>
+				</stats>
+			</li>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CadianKasrkin_HeavyArmor"]/statBases</xpath>
+		<value>
+			<Bulk>20</Bulk>
+			<WornBulk>8.5</WornBulk>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CadianKasrkin_HeavyArmor"]/statBases/ArmorRating_Sharp</xpath>
+		<value>
+			<ArmorRating_Sharp>17.5</ArmorRating_Sharp>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CadianKasrkin_HeavyArmor"]/statBases/ArmorRating_Blunt</xpath>
+		<value>
+			<ArmorRating_Blunt>28</ArmorRating_Blunt>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CadianKasrkin_HeavyArmor"]/modExtensions</xpath>
+		<value>
+			<modExtensions>
+			<li Class="CombatExtended.PartialArmorExt">
+				<stats>
+					<li>
+						<ArmorRating_Sharp>0.90</ArmorRating_Sharp>
+						<parts>
+							<li>Leg</li>
+						</parts>
+					</li>
+					<li>
+						<ArmorRating_Blunt>0.90</ArmorRating_Blunt>
+						<parts>
+							<li>Leg</li>
+						</parts>
+					</li>
+					<li>
+						<ArmorRating_Sharp>0.80</ArmorRating_Sharp>
+						<parts>
+							<li>Arm</li>
+						</parts>
+					</li>
+					<li>
+						<ArmorRating_Blunt>0.80</ArmorRating_Blunt>
+						<parts>
+							<li>Arm</li>
+						</parts>
+					</li>
+					<li>
+						<ArmorRating_Sharp>0.60</ArmorRating_Sharp>
+						<parts>
+							<li>Hand</li>
+						</parts>
+					</li>
+					<li>
+						<ArmorRating_Blunt>0.60</ArmorRating_Blunt>
+						<parts>
+							<li>Hand</li>
+						</parts>
+					</li>
+				</stats>
+			</li>
+			</modExtensions>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CadianKasrkin_Helmet" or defName="GW_HOI_Cadian_CastellenHelmet"]/statBases</xpath>
+		<value>
+			<Bulk>5</Bulk>
+			<WornBulk>1</WornBulk>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CadianKasrkin_Helmet"]/equippedStatOffsets</xpath>
+		<value>
+			<SmokeSensitivity>-0.75</SmokeSensitivity>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CadianKasrkin_Helmet"]/statBases</xpath>
+		<value>
+			<NightVisionEfficiency_Apparel>0.80</NightVisionEfficiency_Apparel>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CadianKasrkin_Helmet" or defName="GW_HOI_Cadian_CastellenHelmet"]/statBases/ArmorRating_Sharp</xpath>
+		<value>
+			<ArmorRating_Sharp>9</ArmorRating_Sharp>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CadianKasrkin_Helmet" or defName="GW_HOI_Cadian_CastellenHelmet"]/statBases/ArmorRating_Blunt</xpath>
+		<value>
+			<ArmorRating_Blunt>13.5</ArmorRating_Blunt>
+		</value>
+	</Operation>
+
+	<!-- Commissar Gear -->
+	<!-- No longer stuffable for some reason, archived in case it's restored
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CommissarMiddle"]/stuffCategories </xpath>
+		<value>
+			<stuffCategories>
+				<li>Steeled</li>
+			</stuffCategories>
+		</value>
+	</Operation>
+	-->
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CommissarMiddle"]/statBases/StuffEffectMultiplierArmor</xpath>
+		<value>
+			<StuffEffectMultiplierArmor>3</StuffEffectMultiplierArmor>
+			<Bulk>5</Bulk>
+			<WornBulk>2.5</WornBulk>			
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CommissarMiddle"]/statBases/ArmorRating_Sharp</xpath>
+		<value>
+			<ArmorRating_Sharp>9</ArmorRating_Sharp>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GW_HOI_CommissarMiddle"]/statBases/ArmorRating_Blunt</xpath>
+		<value>
+			<ArmorRating_Blunt>14</ArmorRating_Blunt>
+		</value>
+	</Operation>
+	
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[
+			defName="GW_HOI_CommissarOuter" or
+			defName="GW_AM_PriestGear" or
+			defName="GW_HOI_CadianPsykerJacket" or
+			defName="GW_HOI_Enginseerer"
+			]/statBases/StuffEffectMultiplierArmor</xpath>
+		<value>
+			<StuffEffectMultiplierArmor>5</StuffEffectMultiplierArmor>
+			<Bulk>5</Bulk>
+			<WornBulk>2.5</WornBulk>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="GW_HOI_EngineseererMask"]/equippedStatOffsets</xpath>
+		<value>
+			<SmokeSensitivity>-0.75</SmokeSensitivity>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="GW_HOI_EngineseererMask"]/statBases</xpath>
+		<value>
+			<NightVisionEfficiency_Apparel>0.80</NightVisionEfficiency_Apparel>
+		</value>
+	</Operation>
+
+</Patch>

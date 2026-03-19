@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/PawnKindDef[defName="Mechanoid_Hound"]/combatPower</xpath>
+		<value>
+			<combatPower>550</combatPower>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/PawnKindDef[defName="Mechanoid_Chimera"]/combatPower</xpath>
+		<value>
+			<combatPower>550</combatPower>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/PawnKindDef[defName="Mechanoid_Kraken"]/combatPower</xpath>
+		<value>
+			<combatPower>650</combatPower>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAddModExtension">
+		<xpath>Defs/PawnKindDef[defName="Mechanoid_Vespa" or defName="Mechanoid_Hound" or defName="Mechanoid_Chimera" or defName="Mechanoid_Kraken"]</xpath>
+		<value>
+			<li Class="CombatExtended.LoadoutPropertiesExtension">
+				<primaryMagazineCount>
+					<min>4</min>
+					<max>6</max>
+				</primaryMagazineCount>
+			</li>
+		</value>
+	</Operation>
+
+</Patch>

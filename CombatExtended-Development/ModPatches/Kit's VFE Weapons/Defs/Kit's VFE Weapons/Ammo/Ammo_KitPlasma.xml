@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<!-- ==================== AmmoSets ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_KIT_PlasmaPistol</defName>
+		<label>Plasma Pistol Power Cell</label>
+		<ammoTypes>
+			<Ammo_PlasmaCellPistol>Bullet_KIT_PlasmaPistol</Ammo_PlasmaCellPistol>
+		</ammoTypes>
+	</CombatExtended.AmmoSetDef>
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_KIT_PlasmaSMG</defName>
+		<label>Plasma Pistol Power Cell</label>
+		<ammoTypes>
+			<Ammo_PlasmaCellPistol>Bullet_KIT_PlasmaSMG</Ammo_PlasmaCellPistol>
+		</ammoTypes>
+	</CombatExtended.AmmoSetDef>
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_KIT_PlasmaRifle</defName>
+		<label>Plasma Rifle Power Cell</label>
+		<ammoTypes>
+			<Ammo_PlasmaCellRifle>Bullet_KIT_PlasmaRifle</Ammo_PlasmaCellRifle>
+		</ammoTypes>
+	</CombatExtended.AmmoSetDef>
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_KIT_PlasmaSniper</defName>
+		<label>Plasma Heavy Power Cell (Sniper)</label>
+		<ammoTypes>
+			<Ammo_PlasmaCellHeavy>Bullet_KIT_PlasmaSniper</Ammo_PlasmaCellHeavy>
+		</ammoTypes>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ================== Projectiles ================== -->
+
+	<ThingDef ParentName="BaseVFEIPlasmaBullet">
+		<defName>Bullet_KIT_PlasmaPistol</defName>
+		<label>plasma pistol shot</label>
+		<graphicData>
+			<texPath>Things/Item/Weapons/Plasma_Beam</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>10</damageAmountBase>
+			<armorPenetrationSharp>8</armorPenetrationSharp>
+			<armorPenetrationBlunt>8</armorPenetrationBlunt>
+			<empShieldBreakChance>0.2</empShieldBreakChance>
+			<secondaryDamage>
+				<li>
+					<def>EMP</def>
+					<amount>3</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="BaseVFEIPlasmaBullet">
+		<defName>Bullet_KIT_PlasmaRifle</defName>
+		<label>plasma rifle shot</label>
+		<graphicData>
+			<texPath>Things/Item/Weapons/Plasma_Nail</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>18</damageAmountBase>
+			<armorPenetrationSharp>15</armorPenetrationSharp>
+			<armorPenetrationBlunt>18</armorPenetrationBlunt>
+			<empShieldBreakChance>0.5</empShieldBreakChance>
+			<secondaryDamage>
+				<li>
+					<def>EMP</def>
+					<amount>9</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="BaseVFEIPlasmaBullet">
+		<defName>Bullet_KIT_PlasmaSMG</defName>
+		<label>plasma submachine gun shot</label>
+		<graphicData>
+			<texPath>Things/Item/Weapons/Plasma_Beam</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>5</damageAmountBase>
+			<armorPenetrationSharp>6</armorPenetrationSharp>
+			<armorPenetrationBlunt>6</armorPenetrationBlunt>
+			<empShieldBreakChance>0.05</empShieldBreakChance>
+			<secondaryDamage>
+				<li>
+					<def>EMP</def>
+					<amount>1</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="BaseVFEIPlasmaBullet">
+		<defName>Bullet_KIT_PlasmaSniper</defName>
+		<label>plasma rifle shot</label>
+		<graphicData>
+			<texPath>Things/Item/Weapons/Plasma_Nail</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>45</damageAmountBase>
+			<armorPenetrationSharp>25</armorPenetrationSharp>
+			<armorPenetrationBlunt>34</armorPenetrationBlunt>
+			<empShieldBreakChance>1</empShieldBreakChance>
+			<secondaryDamage>
+				<li>
+					<def>EMP</def>
+					<amount>15</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+</Defs>
